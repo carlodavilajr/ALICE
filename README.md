@@ -54,7 +54,7 @@ alice/
 Requires Python 3.10 or newer.
 
 ```bash
-git clone https://github.com/carlodavilajr/alice.git
+git clone https://github.com/carlodavilajr/ALICE
 cd alice
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
