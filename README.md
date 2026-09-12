@@ -1,5 +1,7 @@
 # ALICE
 
+By Carlo S. Davila
+
 An economic analytical tool. ALICE reads a CSV of economic time series, detects the time column, and lets you transform, plot, regress, and interpret the data from a browser interface. Python does the analysis (Pandas, NumPy, Matplotlib); Flask serves a plain HTML, CSS, and JavaScript front end.
 
 Built for students and researchers who want quick, correct views of macroeconomic data without writing a notebook each time.
@@ -52,7 +54,7 @@ alice/
 Requires Python 3.10 or newer.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/alice.git
+git clone https://github.com/carlodavilajr/alice.git
 cd alice
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
