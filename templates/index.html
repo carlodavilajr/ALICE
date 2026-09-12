@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALICE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="wordmark">ALICE</span>
+      <span class="tagline">Economic analytical tool</span>
+    </div>
+    <div class="dataset-name" id="dataset-name">No dataset loaded</div>
+  </header>
+
+  <main class="workbench">
+    <aside class="controls">
+      <section class="block">
+        <h2>Data</h2>
+        <label class="file-drop" for="file-input">
+          <input type="file" id="file-input" accept=".csv,text/csv">
+          <span id="file-label">Choose a CSV file</span>
+        </label>
+        <button class="btn secondary" id="btn-sample" type="button">Load sample dataset</button>
+        <p class="hint">First row must be column names. One column should hold the date or year.</p>
+      </section>
+
+      <section class="block" id="column-block" hidden>
+        <h2>Columns</h2>
+        <label class="field">
+          <span>Time column</span>
+          <select id="time-column"></select>
+        </label>
+        <div class="field">
+          <span>Series to analyze</span>
+          <div class="checklist" id="column-checklist"></div>
+        </div>
+        <label class="field">
+          <span>Transform</span>
+          <select id="transform"></select>
+        </label>
+        <div class="field param" id="param-window" hidden>
+          <label><span>Window (periods)</span><input type="number" id="window" value="3" min="2"></label>
+        </div>
+        <div class="field param" id="param-deflator" hidden>
+          <label><span>Deflator column (price index)</span><select id="deflator"></select></label>
+          <label><span>Base row (0 = first, -1 = last)</span><input type="number" id="base-position" value="-1"></label>
+        </div>
+        <div class="field param" id="param-base" hidden>
+          <label><span>Base row (0 = first)</span><input type="number" id="index-base" value="0" min="0"></label>
+        </div>
+        <label class="field">
+          <span>Chart</span>
+          <select id="chart-kind">
+            <option value="line">Line</option>
+            <option value="bar">Bar</option>
+          </select>
+        </label>
+        <button class="btn" id="btn-series" type="button">Plot series</button>
+        <button class="btn secondary" id="btn-export" type="button">Download transformed CSV</button>
+      </section>
+
+      <section class="block" id="regression-block" hidden>
+        <h2>Regression</h2>
+        <p class="hint">Ordinary least squares of y on x. Use growth transforms to avoid spurious fits on trending levels.</p>
+        <label class="field"><span>x</span><select id="reg-x"></select></label>
+        <label class="field"><span>x transform</span><select id="reg-x-t"></select></label>
+        <label class="field"><span>y</span><select id="reg-y"></select></label>
+        <label class="field"><span>y transform</span><select id="reg-y-t"></select></label>
+        <button class="btn" id="btn-regression" type="button">Run regression</button>
+      </section>
+
+      <section class="block" id="other-block" hidden>
+        <h2>More</h2>
+        <button class="btn" id="btn-correlation" type="button">Correlation matrix</button>
+        <button class="btn" id="btn-histogram" type="button">Histogram of first selected</button>
+        <button class="btn" id="btn-interpret" type="button">Generate notes</button>
+      </section>
+    </aside>
+
+    <section class="results">
+      <div class="empty" id="empty-state">
+        <p>Load a dataset to begin. ALICE reads a CSV, detects the time column, and lets you plot levels, growth rates, indexed series, and real values; run a regression; and produce written notes on the trends.</p>
+      </div>
+
+      <div class="notice" id="notice" hidden></div>
+
+      <div class="panel" id="preview-panel" hidden>
+        <div class="panel-head">
+          <h2>Preview</h2>
+          <span class="meta" id="preview-meta"></span>
+        </div>
+        <div class="table-wrap"><table id="preview-table"></table></div>
+      </div>
+
+      <div class="panel" id="chart-panel" hidden>
+        <div class="panel-head">
+          <h2 id="chart-title">Chart</h2>
+          <a class="link" id="chart-download" download="alice_chart.png">Save PNG</a>
+        </div>
+        <img id="chart-image" alt="Chart output">
+        <div class="table-wrap" id="chart-stats"></div>
+      </div>
+
+      <div class="panel" id="notes-panel" hidden>
+        <div class="panel-head"><h2>Notes</h2></div>
+        <div id="notes"></div>
+      </div>
+
+      <div class="panel" id="stats-panel" hidden>
+        <div class="panel-head"><h2>Descriptive statistics</h2></div>
+        <div class="table-wrap"><table id="stats-table"></table></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
